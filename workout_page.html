@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Routine Builder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        select, input[type="number"], input[type="text"], button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .day {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            min-height: 150px;
+            text-align: center;
+            position: relative;
+        }
+        .workout-list {
+            margin-top: 10px;
+        }
+        .workout-list-item {
+            background-color: #d1e7dd;
+            margin-bottom: 5px;
+            padding: 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Workout Routine Builder</h1>
+
+        <form id="workout-form">
+            <label for="age">Age</label>
+            <input type="number" id="age" min="1" required>
+
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" min="1" required>
+
+            <label for="home-workout">
+                <input type="checkbox" id="home-workout"> Home Workout
+            </label>
+
+            <label for="goal">Fitness Goal</label>
+            <select id="goal" required>
+                <option value="strength">Strength</option>
+                <option value="endurance">Endurance</option>
+                <option value="flexibility">Flexibility</option>
+                <option value="weight_loss">Weight Loss</option>
+                <option value="muscle_building">Muscle Building</option>
+                <option value="cardio_health">Cardio Health</option>
+                <option value="mobility">Mobility</option>
+            </select>
+
+            <label for="equipment">Available Equipment</label>
+            <select id="equipment" required>
+                <option value="none">None</option>
+                <option value="dumbbells">Dumbbells</option>
+                <option value="resistance_bands">Resistance Bands</option>
+                <option value="kettlebells">Kettlebells</option>
+                <option value="barbell">Barbell</option>
+                <option value="treadmill">Treadmill</option>
+                <option value="stationary_bike">Stationary Bike</option>
+                <option value="jump_rope">Jump Rope</option>
+                <option value="medicine_ball">Medicine Ball</option>
+            </select>
+
+            <label for="exercise">Select Exercise</label>
+            <select id="exercise" required>
+                <!-- Default exercises for gym -->
+                <option value="pushups">Push-ups</option>
+                <option value="squats">Squats</option>
+                <option value="lunges">Lunges</option>
+                <option value="plank">Plank</option>
+                <option value="burpees">Burpees</option>
+                <option value="deadlift">Deadlift</option>
+                <option value="bench_press">Bench Press</option>
+                <option value="bicep_curls">Bicep Curls</option>
+                <option value="tricep_dips">Tricep Dips</option>
+                <option value="pullups">Pull-ups</option>
+                <option value="leg_press">Leg Press</option>
+                <option value="jumping_jacks">Jumping Jacks</option>
+                <option value="mountain_climbers">Mountain Climbers</option>
+                <option value="russian_twists">Russian Twists</option>
+                <option value="bicycle_crunches">Bicycle Crunches</option>
+                <option value="step_ups">Step-ups</option>
+            </select>
+
+            <label for="sets">Sets</label>
+            <input type="number" id="sets" min="1" required>
+
+            <label for="reps_or_duration">Reps or Duration (seconds)</label>
+            <input type="text" id="reps_or_duration" placeholder="E.g., 10 reps or 30 seconds" required>
+
+            <label for="day">Select Day</label>
+            <select id="day" required>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+            </select>
+
+            <button type="submit">Add to Schedule</button>
+        </form>
+
+        <div class="calendar">
+            <div class="day" id="monday"><strong>Monday</strong><div class="workout-list"></div></div>
+            <div class="day" id="tuesday"><strong>Tuesday</strong><div class="workout-list"></div></div>
+            <div class="day" id="wednesday"><strong>Wednesday</strong><div class="workout-list"></div></div>
+            <div class="day" id="thursday"><strong>Thursday</strong><div class="workout-list"></div></div>
+            <div class="day" id="friday"><strong>Friday</strong><div class="workout-list"></div></div>
+            <div class="day" id="saturday"><strong>Saturday</strong><div class="workout-list"></div></div>
+            <div class="day" id="sunday"><strong>Sunday</strong><div class="workout-list"></div></div>
+        </div>
+        <div><button type="submit"><a href="Food_Schedule.html" class="button">View Food Schedule</a></button></div>
+    </div>
+
+    <script>
+        const homeWorkoutCheckbox = document.getElementById('home-workout');
+        const equipmentSelect = document.getElementById('equipment');
+        const exerciseSelect = document.getElementById('exercise');
+
+        homeWorkoutCheckbox.addEventListener('change', function() {
+            if (homeWorkoutCheckbox.checked) {
+                equipmentSelect.value = 'none';
+                exerciseSelect.innerHTML = `
+                    <option value="pushups">Push-ups</option>
+                    <option value="squats">Squats</option>
+                    <option value="lunges">Lunges</option>
+                    <option value="plank">Plank</option>
+                    <option value="burpees">Burpees</option>
+                    <option value="jumping_jacks">Jumping Jacks</option>
+                    <option value="mountain_climbers">Mountain Climbers</option>
+                    <option value="russian_twists">Russian Twists</option>
+                    <option value="bicycle_crunches">Bicycle Crunches</option>
+                    <option value="step_ups">Step-ups</option>
+                `;
+            } else {
+                exerciseSelect.innerHTML = `
+                    <option value="pushups">Push-ups</option>
+                    <option value="squats">Squats</option>
+                    <option value="lunges">Lunges</option>
+                    <option value="plank">Plank</option>
+                    <option value="burpees">Burpees</option>
+                    <option value="deadlift">Deadlift</option>
+                    <option value="bench_press">Bench Press</option>
+                    <option value="bicep_curls">Bicep Curls</option>
+                    <option value="tricep_dips">Tricep Dips</option>
+                    <option value="pullups">Pull-ups</option>
+                    <option value="leg_press">Leg Press</option>
+                    <option value="jumping_jacks">Jumping Jacks</option>
+                    <option value="mountain_climbers">Mountain Climbers</option>
+                    <option value="russian_twists">Russian Twists</option>
+                    <option value="bicycle_crunches">Bicycle Crunches</option>
+                    <option value="step_ups">Step-ups</option>
+                `;
+            }
+        });
+
+        document.getElementById('workout-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const age = document.getElementById('age').value;
+            const weight = document.getElementById('weight').value;
+            const exercise = exerciseSelect.value;
+            const sets = document.getElementById('sets').value;
+            const repsOrDuration = document.getElementById('reps_or_duration').value;
+            const day = document.getElementById('day').value;
+
+            const workoutList = document.querySelector(`#${day} .workout-list`);
+            const workoutItem = document.createElement('div');
+            workoutItem.classList.add('workout-list-item');
+            workoutItem.innerHTML = `
+                <strong>Age:</strong> ${age} <br>
+                <strong>Weight:</strong> ${weight} kg <br>
+                <strong>Exercise:</strong> ${exercise} <br>
+                <strong>Sets:</strong> ${sets} <br>
+                <strong>Reps/Duration:</strong> ${repsOrDuration}
+            `;
+            workoutList.appendChild(workoutItem);
+        });
+    </script>
+
+</body>
+</html>
