@@ -4,4 +4,5 @@
 
 - **HTML5** – Structure of the website  
 - **CSS3** – Styling & responsiveness  
-- **JavaScript** – Interactivity & validation  
+- **JavaScript** – Interactivity & validation
+- **React**
